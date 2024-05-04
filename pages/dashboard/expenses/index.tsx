@@ -40,7 +40,7 @@ function Index() {
         .from(Expenses)
         .where(eq(Expenses.createdBy, user?.primaryEmailAddress?.emailAddress || ""))
         .orderBy(desc(Expenses.id));
-      setExpenseItems(result);
+      setExpenseItems(result.map(item => ({ ...item, icon: null })));
     }
   };
   return (
