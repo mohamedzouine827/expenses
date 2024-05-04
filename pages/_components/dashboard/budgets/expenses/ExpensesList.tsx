@@ -1,26 +1,19 @@
-import { db } from '@/utils/dbConfig';
-import { Expenses } from '@/utils/schema';
-import { eq } from 'drizzle-orm';
-import { Trash } from 'lucide-react';
-import React from 'react';
-import { toast } from 'sonner';
+import { db } from '@/utils/dbConfig'
+import { Expenses } from '@/utils/schema'
+import { eq } from 'drizzle-orm'
+import { Trash } from 'lucide-react'
+import React from 'react'
+import { toast } from 'sonner'
 
-interface ExpenseItem {
-    id: string;
-    name: string;
-    amount: number;
-    createdAt: string; // Assuming createdAt is a string, you might want to use a Date type
-}
+function ExpensesListTable({ expItem, refreshData }: { expItem: any[], refreshData: () => void }) {
 
-function ExpensesListTable({ expItem, refreshData }: { expItem: ExpenseItem[], refreshData: () => void }) {
-
-    const deleteExpense = async (exp: ExpenseItem) => {
+    const deleteExpense = async (exp :any ) => {
         const result = await db.delete(Expenses)
-            .where(eq(Expenses.id, parseInt(exp.id)))
+            .where(eq(Expenses.id, exp.id))
             .returning();
         
         if (result) {
-            console.log(result);
+            console.log(result)
             toast('Expense Deleted!');
             refreshData();
         }
@@ -47,7 +40,7 @@ function ExpensesListTable({ expItem, refreshData }: { expItem: ExpenseItem[], r
                 ))
             }
         </div>
-    );
+    )
 }
 
-export default ExpensesListTable;
+export default ExpensesListTable

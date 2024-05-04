@@ -6,20 +6,21 @@ import { Budgets, Expenses } from '@/utils/schema';
 import { useUser } from '@clerk/nextjs';
 import BudgetItem from './BudgetItem';
 
-// Define an interface for the shape of each budget item
-interface BudgetItem {
+interface Budget {
   id: number;
   name: string;
+  totalSpent: number;
+  totalItem: number;
   // Add other properties as needed
 }
 
 function BudgetsList() {
   const { user } = useUser();
-  const [budgetList, setBudgetList] = useState<BudgetItem[]>([]); // Explicitly type budgetList as BudgetItem[]
+  const [budgetList, setBudgetList] = useState<Budget[]>([]); // Specify type as Budget[]
 
   useEffect(() => {
     user && getBudgetList();
-  }, [user]); // Removed budgetList from dependencies as it might cause an infinite loop
+  }, [user]); // Remove budgetList from dependency array
 
   const getBudgetList = async () => {
     const result = await db
