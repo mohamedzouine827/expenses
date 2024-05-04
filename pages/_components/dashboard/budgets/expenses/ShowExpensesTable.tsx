@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ShowExpensesTable( {expenseItem}) {
+function ShowExpensesTable( {expenseItem} : {expenseItem: any[]}) {
   return (
     <div className='mt-10'>
         <div className='grid grid-cols-3 bg-slate-200 p-2'>

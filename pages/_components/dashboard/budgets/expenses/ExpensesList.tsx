@@ -5,7 +5,7 @@ import { Trash } from 'lucide-react'
 import React from 'react'
 import { toast } from 'sonner'
 
-function ExpensesListTable({ expItem, refreshData }) {
+function ExpensesListTable({ expItem, refreshData }: { expItem: any[], refreshData: () => void }) {
 
     const deleteExpense = async (exp) => {
         const result = await db.delete(Expenses)
