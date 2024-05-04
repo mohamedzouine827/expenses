@@ -23,11 +23,29 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+type Expenses = {
+  id: number;
+  name: string;
+  amount: string;
+  createdBy: string;
+  budgetId: number | null;
+  createdAt: string;
+};
+
+
+interface Budgets {
+  id: number;
+  name: string;
+  amount: string;
+  icon?: string;
+  createdBy: string;
+}
+
 function Index() {
   const { user } = useUser();
   const router = useRouter();
-  const [budgetInfo, setBudgetInfo] = useState([]);
-  const [expensesList, setExpensesList] = useState([]);
+  const [budgetInfo, setBudgetInfo] = useState<Budgets[]>([]);
+ const [expensesList, setExpensesList] = useState<Expenses[]>([]);
   const budgetId = Number(router.query.id);
 
   useEffect(() => {
@@ -39,7 +57,8 @@ function Index() {
       // Handle the case where router.query.id is not a valid number
       console.error("Invalid budget ID:", router.query.id);
     }
-  }, [user]);
+  }, [user, budgetId, router.query.id]);
+  
 
   const getBudgetInfo = async () => {
     const result = await db
@@ -54,8 +73,7 @@ function Index() {
       .leftJoin(Expenses, eq(Budgets.id, Expenses.budgetId))
       .where(
         eq(Budgets.createdBy, user?.primaryEmailAddress?.emailAddress || "")
-      )
-      .where(eq(Budgets.id, Number(router.query.id)))
+      ).where(eq(Budgets.id, Number(router.query.id)))
       .groupBy(Budgets.id);
     setBudgetInfo(result[0]);
     getExpensesList();
